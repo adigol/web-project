@@ -7,13 +7,13 @@
     <meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
     <meta name="keywords" content="free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
     <meta name="author" content="FreeHTML5.co" />
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
     <!--
     //////////////////////////////////////////////////////
 
@@ -60,6 +60,10 @@
     <script src="js/respond.min.js"></script>
     <![endif]-->
     <link href="css/bootstrap.fd.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 
 </head>
 <body>
@@ -114,10 +118,14 @@
                 </ul>
             </div>
         </aside>
+      
         <div id="fh5co-main">
             <div class="fh5co-gallery">
             </div>
 
+            <div class="w3-padding w3-xlarge w3">
+                <button class="fa fa-trash" onclick="Delete()"></button></div>
+            
             <video style="width:100%" height="240" poster="" controls>
                 <source src="shlomo.mp3" type="audio/mpeg">
             </video>
@@ -284,12 +292,10 @@
         function loadList() {
             $(".fh5co-gallery").html('');
             let imagesRef = firebase.database().ref().child(firebase.auth().currentUser.uid).child("images");
-            //  let imagesRef = firebase.database().ref().child("images");
             let i = 0;
             imagesRef.once('value', function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
                     let childData = childSnapshot.val();
-                    console.log(childData);
                     let imageRef = firebase.storage().ref().child(childData.fileName);
                     imageRef.getDownloadURL().then(function (url) {
                         var xhr = new XMLHttpRequest();
@@ -307,7 +313,8 @@
 
                         $(".fh5co-gallery").append(a);
                         $("#img" + i).fadeOut(0);
-
+                        console.log("parent data" + childData);
+                        $("#img" + i).attr("parentOf", childSnapshot.key);
                         let j = i;
                         setTimeout(function () { $("#img" + j).fadeIn(3000); }, i * 750);
                         i++;
@@ -373,9 +380,9 @@
                     $(this).removeClass("checked");
                 } else {
                     $(this).addClass("checked");
+                    Delete(($(this).attr("parentOf")));
                     $('video').attr('poster', $(this).find("img").attr("src"))
                 }
-                console.log($(this).find("img").attr("src"));
             });
 
         });
@@ -437,6 +444,20 @@
             });
         }
 
+        function Delete(imageParent) {
+            var result = confirm("Want to delete?");
+            if (result) {
+                let rootRef = firebase.database().ref();
+          
+                rootRef.child(firebase.auth().currentUser.uid).child("images").child(imageParent).set(null).then(function () {
+                    console.log("Document successfully deleted!");
+                }).catch(function (error) {
+                    console.error("Error removing document: ", error);
+                });
+
+                }
+
+        }
     </script>
 
 </body>
