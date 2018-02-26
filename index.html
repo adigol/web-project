@@ -126,7 +126,7 @@
             <div class="w3-padding w3-xlarge w3">
                 <button class="fa fa-trash" onclick="Delete()"></button></div>
             
-            <video style="width:100%" height="240" poster="" controls>
+            <video width="320" height="240" poster="" controls>
                 <source src="shlomo.mp3" type="audio/mpeg">
             </video>
             <!--https://en.code-bude.net/2013/04/17/how-to-create-video-files-in-c-from-single-images/-->
@@ -307,7 +307,7 @@
                         xhr.send();
                         let index = "img" + i;
                         let a = '<a class="gallery-item" id="' + index + '"">' +
-                            '<img src="' + url + '" alt="' + url + '" data-url="' + url + '">' + '<span class="overlay">' +
+                            '<img src="' + url + '" alt="' + url + '" data-url="' + url + '"  style="width: 100%;height:100%;">' + '<span class="overlay">' +
                             '<h2></h2>' +
                             '<span></span>' + ' </span>' + '</a>';
 
