@@ -124,8 +124,12 @@
             </div>
 
             <div class="w3-padding w3-xlarge w3">
-                <button class="fa fa-trash" onclick="Delete()"></button></div>
+                <button class="fa fa-trash" onclick="Delete()"></button>
+                <button onclick="Create()">Create your video</button>
+            </div>
             
+
+
             <video width="320" height="240" poster="" controls>
                 <source src="shlomo.mp3" type="audio/mpeg">
             </video>
@@ -380,7 +384,6 @@
                     $(this).removeClass("checked");
                 } else {
                     $(this).addClass("checked");
-                    Delete(($(this).attr("parentOf")));
                     $('video').attr('poster', $(this).find("img").attr("src"))
                 }
             });
@@ -444,19 +447,27 @@
             });
         }
 
-        function Delete(imageParent) {
+        function Delete() {
             var result = confirm("Want to delete?");
             if (result) {
                 let rootRef = firebase.database().ref();
-          
-                rootRef.child(firebase.auth().currentUser.uid).child("images").child(imageParent).set(null).then(function () {
-                    console.log("Document successfully deleted!");
-                }).catch(function (error) {
-                    console.error("Error removing document: ", error);
-                });
+                $.each($(".checked"), function () {
+                    imageParent = $(this).attr("parentOf");
+                    rootRef.child(firebase.auth().currentUser.uid).child("images").child(imageParent).set(null).then(function () {
+                        console.log("Document successfully deleted!");
+                    }).catch(function (error) {
+                        console.error("Error removing document: ", error);
+                    });
 
+                });
                 }
 
+        }
+
+        function Create() {
+            $.each($(".checked"), function () {
+                console.log($(this).find("img:first").attr('src'));
+            });
         }
     </script>
 
