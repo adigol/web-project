@@ -116,21 +116,31 @@
                 </ul>
             </div>
         </aside>
-      
+
+
+
         <div id="fh5co-main">
-            <div class="fh5co-gallery">
+            <div id="gallery">
+                <h1 class="container">step 1: choose photos</h1>
+                <div class="fh5co-gallery"></div>
+            </div>
+            <div class="w3-padding w3-xlarge w3 container" id="delete">
+                <button class="fa fa-trash btn" onclick="Delete()"></button>
+                <button onclick="showNext()" class="btn">Next</button>
             </div>
 
-            <div class="w3-padding w3-xlarge w3">
-                <button class="fa fa-trash" onclick="Delete()"></button>
-                <button onclick="Create()">Create your video</button>
-            </div>
-            
 
 
-            <video width="320" height="240" poster="" controls>
+
+            <video width="320" height="240" poster="" controls id="video" hidden>
                 <source src="shlomo.mp3" type="audio/mpeg">
             </video>
+
+            <div id="create" class="container" hidden>
+                <h1>step 2: choose music</h1>
+                <button onclick="Create()" class="btn">Create your video</button>
+            </div>
+
             <!--https://en.code-bude.net/2013/04/17/how-to-create-video-files-in-c-from-single-images/-->
 
 
@@ -463,10 +473,24 @@
         }
 
         function Create() {
+            $("#create").hide();
             $.each($(".checked"), function () {
                 console.log($(this).find("img:first").attr('src'));
             });
+            $("#video").show();
         }
+
+        function showNext() {
+            $("#fh5co-gallery").hide();
+            $("#delete").hide();
+            $("#gallery").hide();
+            $(document).ready(function () {
+                $("#create").show();
+            });
+
+        }
+
+    
     </script>
 
 </body>
