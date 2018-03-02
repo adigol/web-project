@@ -123,11 +123,12 @@
             <div id="gallery">
                 <h1 class="container">step 1: choose photos</h1>
                 <div class="fh5co-gallery"></div>
+                <div class="w3-padding w3-xlarge w3 container">
+                    <button class="fa fa-trash btn" onclick="Delete()"></button>
+                    <button onclick="showNext()" class="btn">Next</button>
+                </div>
             </div>
-            <div class="w3-padding w3-xlarge w3 container" id="delete">
-                <button class="fa fa-trash btn" onclick="Delete()"></button>
-                <button onclick="showNext()" class="btn">Next</button>
-            </div>
+      
 
 
 
@@ -137,7 +138,11 @@
             </video>
 
             <div id="create" class="container" hidden>
-                <h1>step 2: choose music</h1>
+                <h1>Step 2: choose a song file</h1>
+                <form name="JSONUploadForm">
+                    <input type="file" name="file" accept=".mp3" /> <br />
+                </form>
+                <button onclick="showPrev()" class="btn">Prev</button>
                 <button onclick="Create()" class="btn">Create your video</button>
             </div>
 
@@ -474,15 +479,25 @@
 
         function Create() {
             $("#create").hide();
+            var songPath = document.querySelector("[name=file]").files["0"].name;
+            console.log(songPath);
             $.each($(".checked"), function () {
                 console.log($(this).find("img:first").attr('src'));
             });
             $("#video").show();
         }
 
+        function showPrev() {
+            $("#fh5co-gallery").show();
+            $("#gallery").show();
+            $(document).ready(function () {
+                $("#create").hide();
+            });
+
+        }
+
         function showNext() {
             $("#fh5co-gallery").hide();
-            $("#delete").hide();
             $("#gallery").hide();
             $(document).ready(function () {
                 $("#create").show();
