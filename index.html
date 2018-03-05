@@ -121,7 +121,7 @@
 
         <div id="fh5co-main">
             <div id="gallery">
-                <h1 class="container">step 1: choose photos</h1>
+                <h1 class="container fh5co-heading animate-box" data-animate-effect="fadeInLeft">step 1: choose photos</h1>
                 <div class="fh5co-gallery"></div>
                 <div class="w3-padding w3-xlarge w3 container">
                     <button class="fa fa-trash btn" onclick="Delete()"></button>
@@ -133,12 +133,12 @@
 
 
 
-            <video width="320" height="240" poster="" controls id="video" hidden>
+            <video width="320" height="240" class="center" poster="" controls id="video" hidden>
                 <source src="shlomo.mp3" type="audio/mpeg">
             </video>
 
             <div id="create" class="container" hidden>
-                <h1>Step 2: choose a song file</h1>
+                <h1 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">Step 2: choose a song file</h1>
                 <form name="JSONUploadForm">
                     <input type="file" name="file" accept=".mp3" /> <br />
                 </form>
@@ -479,12 +479,13 @@
 
         function Create() {
             $("#create").hide();
+            $("#video").show();
             var songPath = document.querySelector("[name=file]").files["0"].name;
             console.log(songPath);
             $.each($(".checked"), function () {
                 console.log($(this).find("img:first").attr('src'));
             });
-            $("#video").show();
+           
         }
 
         function showPrev() {
@@ -497,11 +498,16 @@
         }
 
         function showNext() {
-            $("#fh5co-gallery").hide();
-            $("#gallery").hide();
-            $(document).ready(function () {
-                $("#create").show();
-            });
+            var list = document.getElementsByClassName("checked");
+            if (list.length) {
+                $("#fh5co-gallery").hide();
+                $("#gallery").hide();
+                $(document).ready(function () {
+                    $("#create").show();
+                });
+            } else {
+                alert("No images selected");
+            }
 
         }
 

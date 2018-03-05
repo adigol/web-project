@@ -313,6 +313,14 @@ figure figcaption {
   margin: 0 auto;
   padding: 4em 0;
 }
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+
 @media screen and (max-width: 768px) {
   #fh5co-main .fh5co-narrow-content {
     width: 100%;
