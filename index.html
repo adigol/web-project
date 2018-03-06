@@ -443,12 +443,17 @@
                 document.getElementById("hello").innerHTML = "Hello " + email;
                 $("#signIn").hide();
                 $("#logged-in").show();
+                $("#fh5co-gallery").show();
+                $("#gallery").show();
+                $("#uploadImage").show();
                 loadList();
                 // ...
             } else {
-
+                $("#fh5co-gallery").hide();
+                $("#gallery").hide();
                 $("#signIn").show();
                 $("#logged-in").hide();
+                $("#uploadImage").hide();
             }
         });
 
