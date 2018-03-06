@@ -132,17 +132,19 @@
 
 
 
-
-            <video width="320" height="240" class="center" poster="" controls id="video" hidden>
-                <source src="shlomo.mp3" type="audio/mpeg">
-            </video>
+            <div  class="center" id="video" hidden>
+                <video width="320" height="240" poster="" controls>
+                    <source src="shlomo.mp3" type="audio/mpeg">
+                </video>
+                <button onclick="showPrev2()" class="btn">Back</button>
+            </div>
 
             <div id="create" class="container" hidden>
                 <h1 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">Step 2: choose a song file</h1>
                 <form name="JSONUploadForm">
                     <input type="file" name="file" accept=".mp3" /> <br />
                 </form>
-                <button onclick="showPrev()" class="btn">Prev</button>
+                <button onclick="showPrev()" class="btn">Back</button>
                 <button onclick="Create()" class="btn">Create your video</button>
             </div>
 
@@ -483,13 +485,17 @@
         }
 
         function Create() {
-            $("#create").hide();
-            $("#video").show();
-            var songPath = document.querySelector("[name=file]").files["0"].name;
-            console.log(songPath);
-            $.each($(".checked"), function () {
-                console.log($(this).find("img:first").attr('src'));
-            });
+            if (document.querySelector("[name=file]").files.length) {
+                $("#create").hide();
+                $("#video").show();
+                var songPath = document.querySelector("[name=file]").files["0"].name;
+                console.log(songPath);
+                $.each($(".checked"), function () {
+                    console.log($(this).find("img:first").attr('src'));
+                });
+            } else {
+                alert("No sound selected");
+            }
            
         }
 
@@ -499,6 +505,12 @@
             $(document).ready(function () {
                 $("#create").hide();
             });
+
+        }
+
+        function showPrev2() {
+            $("#video").hide();
+            $("#create").show();
 
         }
 
