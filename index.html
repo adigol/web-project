@@ -551,6 +551,25 @@
                 let imageRef = storageRef
                     .child(fileName)
                     .put(file);
+				//new!!
+				let downloadURL = "";
+				imageRef.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+					function(snapshot) {
+						// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+						var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+						console.log('Upload is ' + progress + '% done');
+						if(progress == 100){
+							//download finished!
+						}
+					},
+					function(error) {
+
+  
+					},
+					function() {
+					  // Upload completed successfully, now we can get the download URL
+					     downloadURL = imageRef.snapshot.downloadURL;
+					});
                 let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("songs").push();
                 imageObjectRef.set({
                     fileName: fileName
