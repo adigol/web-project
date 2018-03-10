@@ -506,11 +506,6 @@
             $("#fh5co-gallery").hide();
             $("#gallery").hide();
             if (list.length) {
-                var list2 = [];
-                $.each($(".checked"), function () {
-                    list2.push($(this).find("img:first").attr('src'));
-                });
-
                 $(document).ready(function () {
                     $("#create").show();
                 });
@@ -520,14 +515,14 @@
 
         }
 
-        function loading(list) {
+        function loading(list,sound) {
             $("body").append("<div id='loadingDiv' style='position:fixed;left:0px;top:0px;z-index:999999;width:100%;height:100%;text-align:center;background-color:rgba(0,0,0,0.7);font-size:55px;'><div style='position:fixed; top:40%; width:100%;color:white;' id='tempLink'>Loading...</div></div>");
             $.ajax({
                 url: "http://imagestovideo.eirandanan.com//api/imagesToVideo",
                 type: "post",
                 data: {
                     imageUrls: list,
-                    audioUrl: "https://firebasestorage.googleapis.com/v0/b/album-477f3.appspot.com/o/93bf2232-a6db-53d2-4233-8a093baefccb_shlomo.mp3?alt=media&token=973c1d4e-0292-408c-a16a-95659e525508"
+                    audioUrl: sound
                 },
                 //contentType: "application/json",
                 //processData: false,
@@ -542,6 +537,7 @@
         }
 
         function Create() {
+
             let file = document.querySelector("[name=file]").files;
             if (file.length) {
                 file = document.querySelector("[name=file]").files[0];
@@ -571,20 +567,16 @@
 									var blob = xhr.response;
 								};
 								xhr.open('GET', url);
-								xhr.send();
-								console.log(url);
+                                xhr.send();
+
+                                var list2 = [];
+                                $.each($(".checked"), function () {
+                                    list2.push($(this).find("img:first").attr('src'));
+                                });
+                                loading(list2, url);
 								//url is here
 							}).catch(function (error) {
 								// Handle any errors
-							});
-
-
-							$("#create").hide();
-							$("#video").show();
-							var songPath = document.querySelector("[name=file]").files["0"].name;
-							console.log(songPath);
-							$.each($(".checked"), function () {
-								console.log($(this).find("img:first").attr('src'));
 							});
 						}
 					},
