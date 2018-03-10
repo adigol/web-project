@@ -551,15 +551,41 @@
                 let imageRef = storageRef
                     .child(fileName)
                     .put(file);
+				let imageRef2 = firebase.storage().ref().child(fileName);
+				
+				let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("songs").push();
+                imageObjectRef.set({
+                    fileName: fileName
+                })
+				
 				//new!!
-				let downloadURL = "";
 				imageRef.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
 					function(snapshot) {
 						// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
 						var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-						console.log('Upload is ' + progress + '% done');
 						if(progress == 100){
-							//download finished!
+							imageRef2.getDownloadURL().then(function (url) {
+								var xhr = new XMLHttpRequest();
+								xhr.responseType = 'blob';
+								xhr.onload = function (event) {
+									var blob = xhr.response;
+								};
+								xhr.open('GET', url);
+								xhr.send();
+								console.log(url);
+								//url is here
+							}).catch(function (error) {
+								// Handle any errors
+							});
+
+
+							$("#create").hide();
+							$("#video").show();
+							var songPath = document.querySelector("[name=file]").files["0"].name;
+							console.log(songPath);
+							$.each($(".checked"), function () {
+								console.log($(this).find("img:first").attr('src'));
+							});
 						}
 					},
 					function(error) {
@@ -567,37 +593,11 @@
   
 					},
 					function() {
-					  // Upload completed successfully, now we can get the download URL
-					     downloadURL = imageRef.snapshot.downloadURL;
+					 
 					});
-                let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("songs").push();
-                imageObjectRef.set({
-                    fileName: fileName
-                })
+				//end new!!	
 
-                imageRef2 = firebase.storage().ref().child(fileName);
-
-                imageRef2.getDownloadURL().then(function (url) {
-                    var xhr = new XMLHttpRequest();
-                    xhr.responseType = 'blob';
-                    xhr.onload = function (event) {
-                        var blob = xhr.response;
-                    };
-                    xhr.open('GET', url);
-                    xhr.send();
-                    console.log(url);
-                }).catch(function (error) {
-                    // Handle any errors
-                });
-
-
-                $("#create").hide();
-                $("#video").show();
-                var songPath = document.querySelector("[name=file]").files["0"].name;
-                console.log(songPath);
-                $.each($(".checked"), function () {
-                    console.log($(this).find("img:first").attr('src'));
-                });
+               
             } else {
                 alert("No sound selected");
             }
