@@ -128,11 +128,11 @@
                     <button onclick="showNext()" class="btn">Next</button>
                 </div>
             </div>
-      
 
 
 
-            <div  class="center" id="video" hidden>
+
+            <div class="center" id="video" hidden>
                 <video width="320" height="240" poster="" controls>
                     <source src="shlomo.mp3" type="audio/mpeg">
                 </video>
@@ -345,28 +345,7 @@
             });
         }
         $(document).ready(function () {
-			
-			$("body").append("<div id='loadingDiv' style='position:fixed;left:0px;top:0px;z-index:999999;width:100%;height:100%;text-align:center;background-color:rgba(0,0,0,0.7);font-size:55px;'><div style='position:fixed; top:40%; width:100%;color:white;' id='tempLink'>Loading...</div></div>");
-			$.ajax({
-				url: "http://imagestovideo.eirandanan.com//api/imagesToVideo",
-				type: "post",
-				data: { 
-						imageUrls: ["https://www.w3schools.com/howto/img_fjords.jpg",
-									"https://wallpaperbrowse.com/media/images/soap-bubble-1958650_960_720.jpg",
-									"https://lookmansecurity.com/lookman_new/emansys/products/images/launch_images/Swan_large_1450932169.jpg"], 
-						audioUrl: "https://firebasestorage.googleapis.com/v0/b/album-477f3.appspot.com/o/93bf2232-a6db-53d2-4233-8a093baefccb_shlomo.mp3?alt=media&token=973c1d4e-0292-408c-a16a-95659e525508"
-					  },
-				//contentType: "application/json",
-				//processData: false,
-				success: function(videoUrl){
-					console.log(videoUrl);
-					$("#tempLink").html("<a href='" + videoUrl + "' target='_blank'>Click Here To Open Video</a>");
-				},
-				error:function(err){
-					console.log(err);
-				}
-			});
-		
+
             $("#uploadImage").click(function () {
                 $.FileDialog({
                     accept: "image/*",
@@ -413,7 +392,7 @@
                 // DO SOMETHING when user cancelled
             });
 
-           
+
 
             $(document).on('click', ".gallery-item", function () {
                 if ($(this).hasClass("checked")) {
@@ -501,24 +480,11 @@
                     });
 
                 });
-                }
-
-        }
-
-        function Create() {
-            if (document.querySelector("[name=file]").files.length) {
-                $("#create").hide();
-                $("#video").show();
-                var songPath = document.querySelector("[name=file]").files["0"].name;
-                console.log(songPath);
-                $.each($(".checked"), function () {
-                    console.log($(this).find("img:first").attr('src'));
-                });
-            } else {
-                alert("No sound selected");
             }
-           
+
         }
+
+       
 
         function showPrev() {
             $("#fh5co-gallery").show();
@@ -537,9 +503,14 @@
 
         function showNext() {
             var list = document.getElementsByClassName("checked");
+            $("#fh5co-gallery").hide();
+            $("#gallery").hide();
             if (list.length) {
-                $("#fh5co-gallery").hide();
-                $("#gallery").hide();
+                var list2 = [];
+                $.each($(".checked"), function () {
+                    list2.push($(this).find("img:first").attr('src'));
+                });
+
                 $(document).ready(function () {
                     $("#create").show();
                 });
@@ -549,7 +520,72 @@
 
         }
 
-    
+        function loading(list) {
+            $("body").append("<div id='loadingDiv' style='position:fixed;left:0px;top:0px;z-index:999999;width:100%;height:100%;text-align:center;background-color:rgba(0,0,0,0.7);font-size:55px;'><div style='position:fixed; top:40%; width:100%;color:white;' id='tempLink'>Loading...</div></div>");
+            $.ajax({
+                url: "http://imagestovideo.eirandanan.com//api/imagesToVideo",
+                type: "post",
+                data: {
+                    imageUrls: list,
+                    audioUrl: "https://firebasestorage.googleapis.com/v0/b/album-477f3.appspot.com/o/93bf2232-a6db-53d2-4233-8a093baefccb_shlomo.mp3?alt=media&token=973c1d4e-0292-408c-a16a-95659e525508"
+                },
+                //contentType: "application/json",
+                //processData: false,
+                success: function (videoUrl) {
+                    console.log(videoUrl);
+                    $("#tempLink").html("<a href='" + videoUrl + "' target='_blank'>Click Here To Open Video</a>");
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        function Create() {
+            let file = document.querySelector("[name=file]").files;
+            if (file.length) {
+                file = document.querySelector("[name=file]").files[0];
+                let rootRef = firebase.database().ref();
+                let storageRef = firebase.storage().ref();
+                let fileName = guid() + "_" + file.name;
+                let imageRef = storageRef
+                    .child(fileName)
+                    .put(file);
+                let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("songs").push();
+                imageObjectRef.set({
+                    fileName: fileName
+                })
+
+                imageRef2 = firebase.storage().ref().child(fileName);
+
+                imageRef2.getDownloadURL().then(function (url) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.responseType = 'blob';
+                    xhr.onload = function (event) {
+                        var blob = xhr.response;
+                    };
+                    xhr.open('GET', url);
+                    xhr.send();
+                    console.log(url);
+                }).catch(function (error) {
+                    // Handle any errors
+                });
+
+
+                $("#create").hide();
+                $("#video").show();
+                var songPath = document.querySelector("[name=file]").files["0"].name;
+                console.log(songPath);
+                $.each($(".checked"), function () {
+                    console.log($(this).find("img:first").attr('src'));
+                });
+            } else {
+                alert("No sound selected");
+            }
+
+        }
+
+
     </script>
 
 </body>
