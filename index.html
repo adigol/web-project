@@ -79,7 +79,7 @@
                     <li class="fh5co-active"><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a id="uploadImage">Upload an image</a></li>
-                    <li><a id="uploadSound">Upload a sound</a></li>
+                    <li><a id="uploadSong">Upload a song</a></li>
                 </ul>
                 <div id="signIn">
                     <div>
@@ -224,6 +224,7 @@
                     </div>
                 </div>
             </div>
+          
 
             <div class="fh5co-counters" style="background-image: url(images/hero.jpg);" data-stellar-background-ratio="0.5" id="counter-animate">
                 <div class="fh5co-narrow-content animate-box">
@@ -346,7 +347,7 @@
 
         function loadList2() {
             $(".fh5co-gallery2").html('');
-            let imagesRef = firebase.database().ref().child(firebase.auth().currentUser.uid).child("sounds");
+            let imagesRef = firebase.database().ref().child(firebase.auth().currentUser.uid).child("songs");
             let i = 0;
             imagesRef.once('value', function (snapshot) {
                 snapshot.forEach(function (childSnapshot) {
@@ -360,15 +361,14 @@
                         };
                         xhr.open('GET', url);
                         xhr.send();
-                        let index = "sound" + i;
-                        let a = '<button" class="item" id="' + index + '"">' +
-                            '<img src="' + url + '" alt="' + url + '" data-url="' + url + '">' + '</button>';
-
+                        let index = "song" + i;
+                        let a = '<button class="item" id="' + index + '">' +
+                          url + '</button>';
                         $(".fh5co-gallery2").append(a);
-                        $("#sound" + i).fadeOut(0);
-                        $("#sound" + i).attr("parentOf", childSnapshot.key);
+                        $("#song" + i).fadeOut(0);
+                        $("#song" + i).attr("parentOf", childSnapshot.key);
                         let j = i;
-                        setTimeout(function () { $("#sound" + j).fadeIn(3000); }, i * 750);
+                        setTimeout(function () { $("#song" + j).fadeIn(3000); }, i * 750);
                         i++;
 
                     }).catch(function (error) {
@@ -379,21 +379,21 @@
         }
 
         $(document).ready(function () {
-            $("#uploadSound").click(function () {
+            $("#uploadSong").click(function () {
                 $.FileDialog({
                     accept: ".mp3",
                     cancelButton: "Cancel",
-                    dragMessage: "Drop soundes here or click to choose manually.",
+                    dragMessage: "Drop songs here or click to choose manually.",
                     dropheight: 400,
                     errorMessage: "An error occured while loading file",
                     multiple: true,
                     okButton: "Upload",
                     readAs: "DataURL",
                     removeMessage: "Remove&nbsp;file",
-                    title: "Load sounds"
+                    title: "Load songs"
                 });
                 $("input[type='file']").addClass("hidden");
-                $(".bfd-dropfield-inner").html("Drop sounds here<br /><b>or</b><br />click here.");
+                $(".bfd-dropfield-inner").html("Drop songs here<br /><b>or</b><br />click here.");
                 $(".bfd-dropfield-inner").css('padding-top', '110px');
                 $(".modal-body").css('background-color', '#f0f0f0');
             });
@@ -437,7 +437,7 @@
                             fileName: fileName
                         });
                     } else {
-                        let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("sounds").push();
+                        let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("songs").push();
                         imageObjectRef.set({
                             fileName: fileName
                         });
@@ -585,14 +585,14 @@
 
         }
 
-        function loading(list,sound) {
+        function loading(list,song) {
             $("body").append("<div id='loadingDiv' style='position:fixed;left:0px;top:0px;z-index:999999;width:100%;height:100%;text-align:center;background-color:rgba(0,0,0,0.7);font-size:55px;'><div style='position:fixed; top:40%; width:100%;color:white;' id='tempLink'>Loading...</div></div>");
             $.ajax({
                 url: "http://imagestovideo.eirandanan.com//api/imagesToVideo",
                 type: "post",
                 data: {
                     imageUrls: list,
-                    audioUrl: sound
+                    audioUrl: song
                 },
                 //contentType: "application/json",
                 //processData: false,
@@ -607,8 +607,30 @@
         }
 
         function Create() {
+            var list = document.getElementsByClassName("checked2");
 
-            let file = document.querySelector("[name=file]").files;
+            if (file.length == 1) {
+                var list2 = [];
+                $.each($(".checked"), function () {
+                    list2.push($(this).find("img:first").attr('src'));
+                });
+                var url = list[0].innerHTML;
+
+                loading(list2, url);
+
+            } else if (file.length == 0) {
+                alert("No song selected");
+            } else if (file.length > 0) {
+                alert("Too many songs selected");
+            }
+
+        }
+
+
+
+
+        function CreatePrev() {
+
             if (file.length) {
                 file = document.querySelector("[name=file]").files[0];
                 let rootRef = firebase.database().ref();
@@ -661,7 +683,7 @@
 
                
             } else {
-                alert("No sound selected");
+                alert("No song selected");
             }
 
         }
