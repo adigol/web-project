@@ -79,6 +79,7 @@
                     <li class="fh5co-active"><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a id="uploadImage">Upload an image</a></li>
+                    <li><a id="uploadSound">Upload a sound</a></li>
                 </ul>
                 <div id="signIn">
                     <div>
@@ -141,9 +142,7 @@
 
             <div id="create" class="container" hidden>
                 <h1 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">Step 2: choose a song file</h1>
-                <form name="JSONUploadForm">
-                    <input type="file" name="file" accept=".mp3" /> <br />
-                </form>
+                <div class="fh5co-gallery2"></div>
                 <button onclick="showPrev()" class="btn">Back</button>
                 <button onclick="Create()" class="btn">Create your video</button>
             </div>
@@ -344,7 +343,61 @@
                 });
             });
         }
+
+        function loadList2() {
+            $(".fh5co-gallery2").html('');
+            let imagesRef = firebase.database().ref().child(firebase.auth().currentUser.uid).child("sounds");
+            let i = 0;
+            imagesRef.once('value', function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    let childData = childSnapshot.val();
+                    let imageRef = firebase.storage().ref().child(childData.fileName);
+                    imageRef.getDownloadURL().then(function (url) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.responseType = 'blob';
+                        xhr.onload = function (event) {
+                            var blob = xhr.response;
+                        };
+                        xhr.open('GET', url);
+                        xhr.send();
+                        let index = "sound" + i;
+                        let a = '<button" class="item" id="' + index + '"">' +
+                            '<img src="' + url + '" alt="' + url + '" data-url="' + url + '">' + '</button>';
+
+                        $(".fh5co-gallery2").append(a);
+                        $("#sound" + i).fadeOut(0);
+                        $("#sound" + i).attr("parentOf", childSnapshot.key);
+                        let j = i;
+                        setTimeout(function () { $("#sound" + j).fadeIn(3000); }, i * 750);
+                        i++;
+
+                    }).catch(function (error) {
+                        // Handle any errors
+                    });
+                });
+            });
+        }
+
         $(document).ready(function () {
+            $("#uploadSound").click(function () {
+                $.FileDialog({
+                    accept: ".mp3",
+                    cancelButton: "Cancel",
+                    dragMessage: "Drop soundes here or click to choose manually.",
+                    dropheight: 400,
+                    errorMessage: "An error occured while loading file",
+                    multiple: true,
+                    okButton: "Upload",
+                    readAs: "DataURL",
+                    removeMessage: "Remove&nbsp;file",
+                    title: "Load sounds"
+                });
+                $("input[type='file']").addClass("hidden");
+                $(".bfd-dropfield-inner").html("Drop sounds here<br /><b>or</b><br />click here.");
+                $(".bfd-dropfield-inner").css('padding-top', '110px');
+                $(".modal-body").css('background-color', '#f0f0f0');
+            });
+
 
             $("#uploadImage").click(function () {
                 $.FileDialog({
@@ -378,10 +431,17 @@
                     let imageRef = storageRef
                         .child(fileName)
                         .put(file);
-                    let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("images").push();
-                    imageObjectRef.set({
-                        fileName: fileName
-                    });
+                    if (file.type == "image") {
+                        let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("images").push();
+                        imageObjectRef.set({
+                            fileName: fileName
+                        });
+                    } else {
+                        let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("sounds").push();
+                        imageObjectRef.set({
+                            fileName: fileName
+                        });
+                    }
                 }
                 loadList();
             });
@@ -399,7 +459,14 @@
                     $(this).removeClass("checked");
                 } else {
                     $(this).addClass("checked");
-                    $('video').attr('poster', $(this).find("img").attr("src"))
+                }
+            });
+
+            $(document).on('click', ".item", function () {
+                if ($(this).hasClass("checked2")) {
+                    $(this).removeClass("checked2");
+                } else {
+                    $(this).addClass("checked2");
                 }
             });
 
@@ -505,8 +572,11 @@
             var list = document.getElementsByClassName("checked");
             $("#fh5co-gallery").hide();
             $("#gallery").hide();
+
             if (list.length) {
                 $(document).ready(function () {
+                    loadList2();
+                    $("#fh5co-gallery2").show();
                     $("#create").show();
                 });
             } else {
