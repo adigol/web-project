@@ -79,7 +79,7 @@
                     <li class="fh5co-active" style="font-style:italic"><a href="index.html">Home</a></li>
                     <li style="font-style:italic"><a href="about.html">About</a></li>
                     <li style="font-style:italic"><a id="uploadImage">Upload an image</a></li>
-                    <li style="font-style:italic"><a id="uploadSound">Upload a sound</a></li>
+                    <li style="font-style:italic"><a id="uploadSong">Upload a song</a></li>
                 </ul>
 
                 <div id="signIn">
@@ -363,9 +363,11 @@
                         xhr.open('GET', url);
                         xhr.send();
                         let index = "song" + i;
+						let b = '<video controls class="item"><source src="'+url+'" type="video/mp4"></video>';
+
                         let a = '<button class="item" id="' + index + '">' +
                           url + '</button>';
-                        $(".fh5co-gallery2").append(a);
+                        $(".fh5co-gallery2").append(b);
                         $("#song" + i).fadeOut(0);
                         $("#song" + i).attr("parentOf", childSnapshot.key);
                         let j = i;
@@ -445,6 +447,7 @@
                     }
                 }
                 loadList();
+				loadList2();
             });
 
 
@@ -517,6 +520,7 @@
                 $("#gallery").show();
                 $("#uploadImage").show();
                 loadList();
+				loadList2();
                 // ...
             } else {
                 $("#fh5co-gallery").hide();
@@ -610,7 +614,7 @@
         function Create() {
             var list = document.getElementsByClassName("checked2");
 
-            if (file.length == 1) {
+            if (list.length == 1) {
                 var list2 = [];
                 $.each($(".checked"), function () {
                     list2.push($(this).find("img:first").attr('src'));
@@ -619,9 +623,9 @@
 
                 loading(list2, url);
 
-            } else if (file.length == 0) {
+            } else if (list.length == 0) {
                 alert("No song selected");
-            } else if (file.length > 0) {
+            } else if (list.length > 0) {
                 alert("Too many songs selected");
             }
 
