@@ -619,7 +619,7 @@
                 $.each($(".checked"), function () {
                     list2.push($(this).find("img:first").attr('src'));
                 });
-                var url = list[0].innerHTML;
+                var url = list[0].currentSrc;
 
                 loading(list2, url);
 
