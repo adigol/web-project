@@ -401,7 +401,7 @@
                 $(".modal-body").css('background-color', '#f0f0f0');
             });
 
-
+			
             $("#uploadImage").click(function () {
                 $.FileDialog({
                     accept: "image/*",
@@ -434,7 +434,8 @@
                     let imageRef = storageRef
                         .child(fileName)
                         .put(file);
-                    if (file.type != ".mp3") {
+						console.log(file.type);
+                    if (file.type != "audio/mp3") {
                         let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("images").push();
                         imageObjectRef.set({
                             fileName: fileName
