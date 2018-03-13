@@ -434,7 +434,7 @@
                     let imageRef = storageRef
                         .child(fileName)
                         .put(file);
-                    if (file.type == "image") {
+                    if (file.type != ".mp3") {
                         let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("images").push();
                         imageObjectRef.set({
                             fileName: fileName
