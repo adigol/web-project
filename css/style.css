@@ -100,7 +100,6 @@ figure figcaption {
   width: 80%;
   margin: 20px auto 0px auto;
   color: #b3b3b3;
-  font-style: italic;
   font-family: "Merriweather", Times, serif;
 }
 @media screen and (max-width: 480px) {
@@ -141,7 +140,6 @@ figure figcaption {
 }
 
 #hello {
-    font-style: italic;
     font-size: 18px;
 }
 
