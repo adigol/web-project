@@ -123,7 +123,7 @@
 
         <div id="fh5co-main">
             <div id="gallery">
-                <h1 class="container fh5co-heading animate-box" data-animate-effect="fadeInLeft">step 1: choose photos</h1>
+                <h1 class="container fh5co-heading animate-box" data-animate-effect="fadeInLeft" style="font-style:italic">step 1: choose photos</h1>
                 <div class="fh5co-gallery"></div>
                 <div class="w3-padding w3-xlarge w3 container">
                     <button class="fa fa-trash btn" onclick="Delete()"></button>
@@ -134,18 +134,16 @@
 
 
 
-            <div class="center" id="video" hidden>
-                <video width="320" height="240" poster="" controls>
-                    <source src="shlomo.mp3" type="audio/mpeg">
-                </video>
-                <button onclick="showPrev2()" class="btn">Back</button>
-            </div>
+        
 
             <div id="create" class="container" hidden>
-                <h1 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">Step 2: choose a song file</h1>
+                <h1 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft" style="font-style:italic">Step 2: choose a song file</h1>
                 <div class="fh5co-gallery2"></div>
+				<div class="w3-padding w3-xlarge w3 container">
                 <button onclick="showPrev()" class="btn">Back</button>
+				<button class="fa fa-trash btn" onclick="Delete2()"></button>
                 <button onclick="Create()" class="btn">Create your video</button>
+				</div>
             </div>
 
             <!--https://en.code-bude.net/2013/04/17/how-to-create-video-files-in-c-from-single-images/-->
@@ -363,10 +361,12 @@
                         xhr.open('GET', url);
                         xhr.send();
                         let index = "song" + i;
-						let b = '<video controls class="item"><source src="'+url+'" type="video/mp4"></video>';
+						
+						 var arrayOfStrings = url.split('_');
+						 var songName = arrayOfStrings[1].split('.')[0];
 
-                        let a = '<button class="item" id="' + index + '">' +
-                          url + '</button>';
+						let b = '<div>'+songName+'<video id="'+index+ '" class="item" controls><source src="'+url+'" type="video/mp4"></video></div>';
+
                         $(".fh5co-gallery2").append(b);
                         $("#song" + i).fadeOut(0);
                         $("#song" + i).attr("parentOf", childSnapshot.key);
@@ -547,6 +547,23 @@
                 $.each($(".checked"), function () {
                     imageParent = $(this).attr("parentOf");
                     rootRef.child(firebase.auth().currentUser.uid).child("images").child(imageParent).set(null).then(function () {
+                        console.log("Document successfully deleted!");
+                    }).catch(function (error) {
+                        console.error("Error removing document: ", error);
+                    });
+
+                });
+            }
+
+        }
+
+		 function Delete2() {
+            var result = confirm("Want to delete?");
+            if (result) {
+                let rootRef = firebase.database().ref();
+                $.each($(".checked2"), function () {
+                    songParent = $(this).attr("parentOf");
+                    rootRef.child(firebase.auth().currentUser.uid).child("songs").child(songParent).set(null).then(function () {
                         console.log("Document successfully deleted!");
                     }).catch(function (error) {
                         console.error("Error removing document: ", error);
