@@ -89,16 +89,16 @@
                     <div>
                         <input id="password" type="password" placeholder="Password...">
                     </div>
-                    <div>
-                        <button id="sign-up" onclick="signUp();">Sign up</button>
+                    <div class="w3-padding w3-xlarge w3 container">
+                        <button id="sign-up" onclick="signUp();" class="btn">Sign up</button>
 
-                        <button id="sign-in" onclick="signIn();">Sign In</button>
+                        <button id="sign-in" onclick="signIn();" class="btn">Sign In</button>
 
                     </div>
                 </div>
-                <div id="logged-in" value="hide">
+                <div id="logged-in" value="hide" class="w3-padding w3-xlarge w3 container">
                     <div id="hello"></div>
-                    <button id="sign-out" onclick="signOut();">Sign Out</button>
+                    <button id="sign-out" onclick="signOut();" class="btn">Sign Out</button>
                 </div>
 
             </nav>
@@ -145,6 +145,11 @@
                 <button onclick="Create()" class="btn">Create your video</button>
 				</div>
             </div>
+			<div id="result" class="container" hidden>
+			<div id="video"></div>
+                <button onclick="showPrev2()" class="btn">Back</button>
+            </div>
+
 
             <!--https://en.code-bude.net/2013/04/17/how-to-create-video-files-in-c-from-single-images/-->
 
@@ -586,7 +591,8 @@
         }
 
         function showPrev2() {
-            $("#video").hide();
+			$("#video").html="";
+            $("#result").hide();
             $("#create").show();
 
         }
@@ -620,8 +626,13 @@
                 //contentType: "application/json",
                 //processData: false,
                 success: function (videoUrl) {
-                    console.log(videoUrl);
-                    $("#tempLink").html("<a href='" + videoUrl + "' target='_blank'>Click Here To Open Video</a>");
+                    let url = videoUrl;
+					let b = '<video controls><source src="'+url+'" type="video/mp4"></video>';
+                        $("#video").append(b);
+						$("#create").hide();
+						$("#result").show();
+					    $("#loadingDiv").remove();
+
                 },
                 error: function (err) {
                     console.log(err);

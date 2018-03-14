@@ -137,9 +137,12 @@ figure figcaption {
 }
 
 #logged-in {
-    font: Verdana, Geneva, sans-serif;
-    font-size: 18px;
     text-align: center;
+}
+
+#hello {
+    font-style: italic;
+    font-size: 18px;
 }
 
 #fh5co-aside {
@@ -296,7 +299,7 @@ figure figcaption {
 }
 
 #fh5co-main {
-  width: 85%;
+  width: 80%;
   float: right;
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
@@ -1006,6 +1009,7 @@ body.offcanvas #fh5co-main, body.offcanvas .fh5co-nav-toggle {
   -moz-border-radius: 50px;
   -ms-border-radius: 50px;
   border-radius: 50px;
+  border-color: #fff;
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
