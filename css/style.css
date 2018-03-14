@@ -468,6 +468,9 @@ figure figcaption {
   bottom: 0px;
 }
 
+body{
+	font-style: italic;
+}
 body.offcanvas {
   overflow-x: hidden;
 }
