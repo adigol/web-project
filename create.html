@@ -76,8 +76,8 @@
             <h1 id="fh5co-logo"><a href="index.html"><img src="images/am.png" alt="Free HTML5 Bootstrap Website Template" width="120" height="140"></a></h1>
             <nav id="fh5co-main-menu" role="navigation">
                <ul>
-                    <li class="fh5co-active"><a href="index.html">Home</a></li>
-					<li><a href="create.html">Create</a></li>
+                    <li><a href="index.html">Home</a></li>
+					<li class="fh5co-active"><a href="create.html">Create</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a id="uploadImage">Upload an image</a></li>
                     <li><a id="uploadSong">Upload a song</a></li>
@@ -120,119 +120,39 @@
             </div>
         </aside>
 
-            <!--https://en.code-bude.net/2013/04/17/how-to-create-video-files-in-c-from-single-images/-->
+
 
         <div id="fh5co-main">
-            <div class="fh5co-narrow-content" >
-                <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">our vision</h2>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="fh5co-feature animate-box" data-animate-effect="fadeInLeft">
-                            <div class="fh5co-icon">
-                                <i class="icon-strategy"></i>
-                            </div>
-                            <div class="fh5co-text">
-                                <h3>Strategy</h3>
-                                <p>doing the best we can in order to ensure easy use for the client, with build in steps to crseate the best music video.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="fh5co-feature animate-box" data-animate-effect="fadeInLeft">
-                            <div class="fh5co-icon">
-                                <i class="icon-telescope"></i>
-                            </div>
-                            <div class="fh5co-text">
-                                <h3>Explore</h3>
-                                <p>studied well all the back scene code needed to ensure fast result, we wouldn't like you to wait long for your video/</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="fh5co-feature animate-box" data-animate-effect="fadeInLeft">
-                            <div class="fh5co-icon">
-                                <i class="icon-circle-compass"></i>
-                            </div>
-                            <div class="fh5co-text">
-                                <h3>Direction</h3>
-                                <p>we are motivated to improve our website and add more features in ordr to improve the outcome music video, so that life before our website will be seen weird. </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="fh5co-feature animate-box" data-animate-effect="fadeInLeft">
-                            <div class="fh5co-icon">
-                                <i class="icon-tools-2"></i>
-                            </div>
-                            <div class="fh5co-text">
-                                <h3>Expertise</h3>
-                                <p>we are not yet expert in web programing, Howevre we hope that in the future we will be able to say we are.</p>
-                            </div>
-                        </div>
-                    </div>
+            <div id="gallery">
+                <h1 class="container fh5co-heading animate-box" data-animate-effect="fadeInLeft">step 1: choose photos</h1>
+                <div class="fh5co-gallery"></div>
+                <div class="w3-padding w3-xlarge w3 container">
+                    <button class="fa fa-trash btn" onclick="Delete()"></button>
+                    <button onclick="showNext()" class="btn">Next</button>
                 </div>
             </div>
 
-            <div class="fh5co-testimonial">
-                <div class="fh5co-narrow-content">
-                    <div class="owl-carousel-fullwidth animate-box" data-animate-effect="fadeInLeft">
-                        <div class="item">
-                            <figure>
-                                <img src="images/steve1.jpg" alt="Free HTML5 Bootstrap Template">
-                            </figure>
-                            <p class="text-center quote">&ldquo;The only way to do great work is to love what you do. If you haven’t found it yet, keep looking. Don’t settle. As with all matters of the heart. you’ll know when you find it. &rdquo; <cite class="author">&mdash; Steve Jobs</cite></p>
-                        </div>
-                        <div class="item">
-                            <figure>
-                                <img src="images/Dijkstra.jpg" alt="Free HTML5 Bootstrap Template">
-                            </figure>
-                            <p class="text-center quote">&ldquo;If debugging is the process of removing software bugs, then programming must be the process of putting them in. &rdquo;<cite class="author">&mdash; Edsger Dijkstra</cite></p>
-                        </div>
-                        <div class="item">
-                            <figure>
-                                <img src="images/Knuth.jpg" alt="Free HTML5 Bootstrap Template">
-                            </figure>
-                            <p class="text-center quote">&ldquo;Computers are good at following instructions, but not at reading your mind. &rdquo;<cite class="author">&mdash;Donald Knuth</cite></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          
 
-            <div class="fh5co-counters" style="background-image: url(images/hero.jpg);" data-stellar-background-ratio="0.5" id="counter-animate">
-                <div class="fh5co-narrow-content animate-box">
-                    <div class="row">
-                        <div class="col-md-4 text-center">
-                            <span class="fh5co-counter js-counter" data-from="0" data-to="67" data-speed="5000" data-refresh-interval="50"></span>
-                            <span class="fh5co-counter-label">Client</span>
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <span class="fh5co-counter js-counter" data-from="0" data-to="130" data-speed="5000" data-refresh-interval="50"></span>
-                            <span class="fh5co-counter-label">Photos</span>
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <span class="fh5co-counter js-counter" data-from="0" data-to="27232" data-speed="5000" data-refresh-interval="50"></span>
-                            <span class="fh5co-counter-label">Pixels</span>
-                        </div>
-                    </div>
-                </div>
+
+
+        
+
+            <div id="create" class="container" hidden>
+                <h1 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">Step 2: choose a song file</h1>
+                <div class="fh5co-gallery2"></div>
+				<div class="w3-padding w3-xlarge w3 container">
+                <button onclick="showPrev()" class="btn">Back</button>
+				<button class="fa fa-trash btn" onclick="Delete2()"></button>
+                <button onclick="Create()" class="btn">Create your video</button>
+				</div>
+            </div>
+			<div id="result" class="container" hidden>
+			<div id="video"></div>
+                <button onclick="showPrev2()" class="btn">Back</button>
             </div>
 
-            <div class="fh5co-narrow-content">
-                <div class="row">
-                    <div class="col-md-4 animate-box" data-animate-effect="fadeInLeft">
-                        <h1 class="fh5co-heading-colored">Thank You</h1>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 animate-box" data-animate-effect="fadeInLeft">
-                        <p class="fh5co-lead">we hope you found our website helpful and useful. enjoy your new music video :)</p>
-                        <p><a href="#" class="btn btn-primary btn-outline">Learn More</a></p>
-                    </div>
 
-					</div>
-                </div>
-            </div>
+            <!--https://en.code-bude.net/2013/04/17/how-to-create-video-files-in-c-from-single-images/-->
         </div>
     </div>
     <!-- jQuery -->
@@ -694,5 +614,6 @@
 
 
     </script>
+
 </body>
 </html>
