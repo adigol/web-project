@@ -487,14 +487,15 @@
 
         }
 
+         
         function showNext() {
             var list = document.getElementsByClassName("checked");
-            $("#fh5co-gallery").hide();
-            $("#gallery").hide();
 
             if (list.length) {
+			    $("#fh5co-gallery").hide();
+                $("#gallery").hide();
                 $(document).ready(function () {
-                    loadList2();
+                 loadList2();
                     $("#fh5co-gallery2").show();
                     $("#create").show();
                 });

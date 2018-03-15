@@ -123,6 +123,7 @@
             <!--https://en.code-bude.net/2013/04/17/how-to-create-video-files-in-c-from-single-images/-->
 
         <div id="fh5co-main">
+<<<<<<< HEAD
 
             <div class="fh5co-narrow-content">
                 <div class="row">
@@ -140,6 +141,10 @@
             
             <div class="fh5co-narrow-content">
                 <h2 class="fh5co-heading animate-box" data-animate-effect="fadeInLeft">our vision</h2>
+=======
+            <div class="fh5co-narrow-content" >
+                <h2 class="fh5co-heading animate-box fh5co-text" data-animate-effect="fadeInLeft">our vision</h2>
+>>>>>>> 54375343a86e661afd9a1a0507f1b792c2530986
                 <div class="row">
                     <div class="col-md-6">
                         <div class="fh5co-feature animate-box" data-animate-effect="fadeInLeft">
@@ -584,10 +589,10 @@
 
         function showNext() {
             var list = document.getElementsByClassName("checked");
-            $("#fh5co-gallery").hide();
-            $("#gallery").hide();
 
             if (list.length) {
+			    $("#fh5co-gallery").hide();
+                $("#gallery").hide();
                 $(document).ready(function () {
                     loadList2();
                     $("#fh5co-gallery2").show();
