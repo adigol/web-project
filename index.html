@@ -447,24 +447,6 @@
                 // DO SOMETHING when user cancelled
             });
 
-
-
-            $(document).on('click', ".gallery-item", function () {
-                if ($(this).hasClass("checked")) {
-                    $(this).removeClass("checked");
-                } else {
-                    $(this).addClass("checked");
-                }
-            });
-
-            $(document).on('click', ".item", function () {
-                if ($(this).hasClass("checked2")) {
-                    $(this).removeClass("checked2");
-                } else {
-                    $(this).addClass("checked2");
-                }
-            });
-
         });
 
         function signUp() {
@@ -507,15 +489,10 @@
                 document.getElementById("hello").innerHTML = "Hello " + email;
                 $("#signIn").hide();
                 $("#logged-in").show();
-                $("#fh5co-gallery").show();
                 $("#gallery").show();
                 $("#uploadImage").show();
-                loadList();
-				loadList2();
                 // ...
             } else {
-                $("#fh5co-gallery").hide();
-                $("#gallery").hide();
                 $("#signIn").show();
                 $("#logged-in").hide();
                 $("#uploadImage").hide();
@@ -529,184 +506,6 @@
                 // An error happened.
             });
         }
-
-        function Delete() {
-            var result = confirm("Want to delete?");
-            if (result) {
-                let rootRef = firebase.database().ref();
-                $.each($(".checked"), function () {
-                    imageParent = $(this).attr("parentOf");
-                    rootRef.child(firebase.auth().currentUser.uid).child("images").child(imageParent).set(null).then(function () {
-                        console.log("Document successfully deleted!");
-                    }).catch(function (error) {
-                        console.error("Error removing document: ", error);
-                    });
-
-                });
-            }
-
-        }
-
-		 function Delete2() {
-            var result = confirm("Want to delete?");
-            if (result) {
-                let rootRef = firebase.database().ref();
-                $.each($(".checked2"), function () {
-                    songParent = $(this).attr("parentOf");
-                    rootRef.child(firebase.auth().currentUser.uid).child("songs").child(songParent).set(null).then(function () {
-                        console.log("Document successfully deleted!");
-                    }).catch(function (error) {
-                        console.error("Error removing document: ", error);
-                    });
-
-                });
-            }
-
-        }
-
-       
-
-        function showPrev() {
-            $("#fh5co-gallery").show();
-            $("#gallery").show();
-            $(document).ready(function () {
-                $("#create").hide();
-            });
-
-        }
-
-        function showPrev2() {
-			$("#video").html="";
-            $("#result").hide();
-            $("#create").show();
-
-        }
-
-        function showNext() {
-            var list = document.getElementsByClassName("checked");
-
-            if (list.length) {
-			    $("#fh5co-gallery").hide();
-                $("#gallery").hide();
-                $(document).ready(function () {
-                    loadList2();
-                    $("#fh5co-gallery2").show();
-                    $("#create").show();
-                });
-            } else {
-                alert("No images selected");
-            }
-
-        }
-
-        function loading(list,song) {
-            $("body").append("<div id='loadingDiv' style='position:fixed;left:0px;top:0px;z-index:999999;width:100%;height:100%;text-align:center;background-color:rgba(0,0,0,0.7);font-size:55px;'><div style='position:fixed; top:40%; width:100%;color:white;' id='tempLink'>Loading...</div></div>");
-            $.ajax({
-                url: "http://imagestovideo.eirandanan.com//api/imagesToVideo",
-                type: "post",
-                data: {
-                    imageUrls: list,
-                    audioUrl: song
-                },
-                //contentType: "application/json",
-                //processData: false,
-                success: function (videoUrl) {
-                    let url = videoUrl;
-					let b = '<video controls><source src="'+url+'" type="video/mp4"></video>';
-                        $("#video").append(b);
-						$("#create").hide();
-						$("#result").show();
-					    $("#loadingDiv").remove();
-
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        }
-
-        function Create() {
-            var list = document.getElementsByClassName("checked2");
-
-            if (list.length == 1) {
-                var list2 = [];
-                $.each($(".checked"), function () {
-                    list2.push($(this).find("img:first").attr('src'));
-                });
-                var url = list[0].currentSrc;
-
-                loading(list2, url);
-
-            } else if (list.length == 0) {
-                alert("No song selected");
-            } else if (list.length > 0) {
-                alert("Too many songs selected");
-            }
-
-        }
-
-
-
-
-        function CreatePrev() {
-
-            if (file.length) {
-                file = document.querySelector("[name=file]").files[0];
-                let rootRef = firebase.database().ref();
-                let storageRef = firebase.storage().ref();
-                let fileName = guid() + "_" + file.name;
-                let imageRef = storageRef
-                    .child(fileName)
-                    .put(file);
-				let imageRef2 = firebase.storage().ref().child(fileName);
-				
-				let imageObjectRef = rootRef.child(firebase.auth().currentUser.uid).child("songs").push();
-                imageObjectRef.set({
-                    fileName: fileName
-                })
-				
-				//new!!
-				imageRef.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-					function(snapshot) {
-						// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-						var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-						if(progress == 100){
-							imageRef2.getDownloadURL().then(function (url) {
-								var xhr = new XMLHttpRequest();
-								xhr.responseType = 'blob';
-								xhr.onload = function (event) {
-									var blob = xhr.response;
-								};
-								xhr.open('GET', url);
-                                xhr.send();
-
-                                var list2 = [];
-                                $.each($(".checked"), function () {
-                                    list2.push($(this).find("img:first").attr('src'));
-                                });
-                                loading(list2, url);
-								//url is here
-							}).catch(function (error) {
-								// Handle any errors
-							});
-						}
-					},
-					function(error) {
-
-  
-					},
-					function() {
-					 
-					});
-				//end new!!	
-
-               
-            } else {
-                alert("No song selected");
-            }
-
-        }
-
 
     </script>
 </body>
